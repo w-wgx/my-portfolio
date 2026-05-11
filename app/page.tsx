@@ -1,4 +1,6 @@
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ContactCard } from "@/components/contact/contact-card";
+import { Hero } from "@/components/hero/hero";
+import { Projects } from "@/components/projects/projects";
 import { createMetadata, siteConfig } from "@/lib/metadata";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -11,16 +13,11 @@ export const metadata: Metadata = createMetadata({
 
 export default function HomePage(): ReactNode {
   return (
-    <>
-      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-4">
-            <ThemeToggle />
-          </nav>
-        </div>
-      </header>
-
-      <main id="main-content" className="flex-1" />
-    </>
+    <main id="main-content" className="flex flex-1 flex-col gap-20 sm:gap-28">
+      <Hero />
+      <Projects withHeadline viewMoreVisible />
+      <ContactCard />
+      <div className="h-12 sm:h-16" />
+    </main>
   );
 }

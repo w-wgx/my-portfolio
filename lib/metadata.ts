@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const siteConfig = {
-  name: "Your Site Name",
+  name: "Portfolio",
   description:
-    "A modern, accessible landing page template built with Next.js, Tailwind CSS, and TypeScript.",
+    "A modern, accessible portfolio template built with Next.js, Tailwind CSS, and TypeScript.",
   url: "https://example.com",
   ogImage: "/og-image.png",
   creator: "@yourhandle",
@@ -14,8 +14,8 @@ export const siteConfig = {
     },
   ],
   keywords: [
-    "landing page",
-    "template",
+    "portfolio",
+    "personal site",
     "Next.js",
     "React",
     "Tailwind CSS",
