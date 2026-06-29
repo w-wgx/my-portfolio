@@ -1,11 +1,14 @@
-import { Mail } from "lucide-react";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { ContactCardCtas } from "./contact-card-ctas";
+import { ClientIcon } from "@/components/ui/ClientIcon";
 import { FadeIn } from "@/components/ui/motion-primitives";
 import { ShaderFlow } from "../shaders/shader-flow";
+import { Mail } from "lucide-react";
 
 const CARD_FADE_MASK =
   "radial-gradient(ellipse 90% 110% at 50% 50%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 40%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.4) 90%, rgba(0,0,0,0.15) 100%)";
@@ -96,7 +99,7 @@ function SocialIcon({
       {...props}
     >
       {LucideIcon ? (
-        <LucideIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
+        <ClientIcon as={LucideIcon} className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
       ) : imageSrc ? (
         <Image
           src={imageSrc}

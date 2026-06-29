@@ -13,6 +13,7 @@
   --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-ibm-plex-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 }
 
 .dark {

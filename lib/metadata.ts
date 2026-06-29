@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const siteConfig = {
-  name: "张文帅作品集",
+  name: "赖星作品集",
   description:
     "全栈开发工程师，专注于3D可视化和数据交互领域。",
   url: "https://aoligei.com",
@@ -9,7 +9,7 @@ export const siteConfig = {
   creator: "2647864942@qq.com",
   authors: [
     {
-      name: "张文帅",
+      name: "赖星",
       url: "https://aoligei.com",
     },
   ],

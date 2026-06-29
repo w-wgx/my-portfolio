@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowRight,
   Bot,
@@ -11,6 +13,7 @@ import type { ComponentType, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { ClientIcon } from "@/components/ui/ClientIcon";
 import { FadeIn } from "@/components/ui/motion-primitives";
 
 /**
@@ -154,10 +157,7 @@ export function Projects({
               className="border border-foreground/8 focus-ring group inline-flex cursor-pointer items-center gap-2 rounded-xl bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
             >
               查看全部项目
-              <ArrowRight
-                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
-                aria-hidden="true"
-              />
+              <ClientIcon as={ArrowRight} className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
             </Link>
           </div>
         ) : null}
@@ -178,7 +178,7 @@ function ProjectCard({
     <article className="project-card flex cursor-pointer flex-col gap-4 rounded-3xl border border-foreground/8 bg-background p-3 sm:p-3.5">
       <header className="flex items-center gap-2.5 px-1 pt-2">
         <span className="border-foreground/10 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border bg-background">
-          <Icon className="h-3.5 w-3.5 text-foreground" aria-hidden="true" />
+          <ClientIcon as={Icon} className="h-3.5 w-3.5 text-foreground" aria-hidden="true" />
         </span>
         <span className="text-sm font-medium tracking-tight text-foreground">
           {project.iconLabel}

@@ -95,7 +95,7 @@ export function Hero(): ReactNode {
                     <PortraitMorph
                       srcA={PORTRAIT_SRC}
                       srcB={PORTRAIT_HOVER_SRC}
-                      alt="张文帅"
+                      alt="赖星"
                     />
                   </div>
                 </div>
