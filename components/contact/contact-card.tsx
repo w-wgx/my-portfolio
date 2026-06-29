@@ -30,11 +30,10 @@ export function ContactCard(): ReactNode {
             <div className="relative grid gap-8 p-6 sm:gap-10 sm:p-7 md:grid-cols-[1.2fr_1fr] md:items-stretch md:gap-6 md:p-6">
               <div className="flex flex-col gap-5">
                 <h2 className="font-serif text-[2.25rem] font-medium leading-[1.05] tracking-tight text-foreground sm:text-[2.75rem] lg:text-[3.25rem]">
-                  Let&rsquo;s connect
+                  让我们联系
                 </h2>
                 <p className="max-w-[29ch] text-[18px] leading-[1.4] tracking-tight text-foreground/65 sm:text-[22px] mb-6">
-                  I&rsquo;m always open to discussing new projects, creative
-                  ideas, or opportunities to be part of your visions. Just reach out!
+                  我总是乐于讨论新项目、创意想法，或成为你愿景的一部分的机会。随时联系我！
                 </p>
                 <ContactCardCtas />
               </div>
@@ -42,13 +41,13 @@ export function ContactCard(): ReactNode {
               <div className="border-foreground/8 flex flex-col items-center justify-center gap-6 rounded-[1.1rem] border bg-background p-6 sm:p-8">
                 <div className="flex items-center gap-3 opacity-75">
                   <SocialIcon
-                    href="mailto:hello@example.com"
-                    label="Email"
+                    href="mailto:2647864942@qq.com"
+                    label="邮箱"
                     lucideIcon={Mail}
                   />
                   <SocialIcon
                     href="https://www.linkedin.com"
-                    label="LinkedIn"
+                    label="领英"
                     imageSrc="/linkedin.svg"
                   />
                   <SocialIcon
@@ -59,10 +58,10 @@ export function ContactCard(): ReactNode {
                 </div>
                 <div className="flex flex-col items-center gap-1 text-center">
                   <p className="text-[13px] tracking-tight text-foreground/70">
-                    2026 &copy; Built with Next.js
+                    2026 &copy; 使用 Next.js 构建
                   </p>
                   <p className="text-[12px] tracking-tight text-foreground/45">
-                    By React Bits Pro
+                    由 React Bits Pro 开发
                   </p>
                 </div>
               </div>

@@ -8,15 +8,17 @@ import { DottedPattern } from "@/components/ui/dotted-pattern";
 type Polaroid = {
   id: string;
   rotate: number;
+  image: string;
+  alt: string;
 };
 
 const PHOTOS: Polaroid[] = [
-  { id: "a", rotate: -8 },
-  { id: "b", rotate: 6 },
-  { id: "c", rotate: -4 },
-  { id: "d", rotate: 7 },
-  { id: "e", rotate: -6 },
-  { id: "f", rotate: 5 },
+  { id: "a", rotate: -8, image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&h=400&fit=crop", alt: "个人生活风景 - 占位图" },
+  { id: "b", rotate: 6, image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=300&h=400&fit=crop", alt: "代码编程 - 占位图" },
+  { id: "c", rotate: -4, image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300&h=400&fit=crop", alt: "工作空间桌面 - 占位图" },
+  { id: "d", rotate: 7, image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=300&h=400&fit=crop", alt: "创意设计 - 占位图" },
+  { id: "e", rotate: -6, image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&h=400&fit=crop", alt: "科技数据 - 占位图" },
+  { id: "f", rotate: 5, image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&h=400&fit=crop", alt: "抽象简约 - 占位图" },
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -74,7 +76,15 @@ function PolaroidCard({
       }}
       className="relative aspect-[3/4] w-[clamp(6rem,11vw,9rem)] shrink-0 overflow-hidden rounded-2xl border-6 border-neutral-300/40 bg-white p-1.5 dark:border-white/15 dark:bg-neutral-900"
     >
-      <DottedPattern className="relative h-full w-full overflow-hidden rounded-xl" />
+      {/* 占位图 - 可替换为个人图片 */}
+      <img
+        src={photo.image}
+        alt={photo.alt}
+        className="h-full w-full object-cover rounded-xl"
+        draggable={false}
+      />
+      {/* 点状纹理叠加 */}
+      <DottedPattern className="absolute inset-0 h-full w-full overflow-hidden rounded-xl opacity-50" />
     </motion.div>
   );
 }

@@ -13,21 +13,20 @@ type Chip = {
 
 const CHIPS: Chip[] = [
   {
-    label: "Figma",
-    slug: "figma",
-    bg: "#1f1f1f",
+    label: "Vue 3",
+    slug: "vuedotjs",
+    bg: "#42b883",
     fg: "#ffffff",
-    iconUrl: "https://svgl.app/library/figma.svg",
   },
-  { label: "React", slug: "react", bg: "#1FB6CB", fg: "#ffffff" },
-  { label: "Next.js", slug: "nextdotjs", bg: "#1f1f1f", fg: "#ffffff" },
-  { label: "TypeScript", slug: "typescript", bg: "#2F74C0", fg: "#ffffff" },
-  { label: "shadcn/ui", slug: "shadcnui", bg: "#5b54ff", fg: "#ffffff" },
-  { label: "Cursor", slug: "cursor", bg: "#111111", fg: "#ffffff" },
-  { label: "GSAP", slug: "gsap", bg: "#0AE448", fg: "#0a0a0a" },
-  { label: "GitHub", slug: "github", bg: "#181717", fg: "#ffffff" },
-  { label: "Vercel", slug: "vercel", bg: "#0a0a0a", fg: "#ffffff" },
-  { label: "Tailwind CSS", slug: "tailwindcss", bg: "#2BBCF5", fg: "#ffffff" },
+  { label: "TypeScript", slug: "typescript", bg: "#3178C6", fg: "#ffffff" },
+  { label: "Java", slug: "java", bg: "#ED8B00", fg: "#ffffff", iconUrl: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/java.svg" },
+  { label: "Spring Boot", slug: "spring", bg: "#6DB33F", fg: "#ffffff" },
+  { label: "Three.js", slug: "threedotjs", bg: "#000000", fg: "#ffffff" },
+  { label: "ECharts", slug: "apacheecharts", bg: "#E53E3E", fg: "#ffffff" },
+  { label: "MySQL", slug: "mysql", bg: "#4479A1", fg: "#ffffff" },
+  { label: "Node.js", slug: "nodedotjs", bg: "#339933", fg: "#ffffff" },
+  { label: "Docker", slug: "docker", bg: "#2496ED", fg: "#ffffff" },
+  { label: "Git", slug: "git", bg: "#F05032", fg: "#ffffff" },
 ];
 
 const CHIP_RADIUS = 14;
@@ -214,7 +213,7 @@ export function Stack(): ReactNode {
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
         <h3 className="text-foreground text-[15px] font-semibold tracking-tight">
-          Stack
+          技术栈
         </h3>
       </div>
 
@@ -222,7 +221,7 @@ export function Stack(): ReactNode {
         <button
           type="button"
           onClick={() => setResetKey((k) => k + 1)}
-          aria-label="Reset stack"
+          aria-label="重置技术栈"
           className="focus-ring border-foreground/8 bg-background text-foreground/70 hover:text-foreground absolute top-3 right-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-xl border transition-colors"
         >
           <RotateCcw

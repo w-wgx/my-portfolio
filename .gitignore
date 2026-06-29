@@ -23,6 +23,11 @@
 # misc
 .DS_Store
 *.pem
+*.pdf
+*.png
+*.jpg
+MDMDMD.MD
+介绍.txt
 
 # debug
 npm-debug.log*

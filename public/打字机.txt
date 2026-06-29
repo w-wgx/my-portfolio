@@ -1,0 +1,195 @@
+请在我的项目中集成 React Bits 的 TextType 打字动画效果，应用到 Hero 区的以下文本：
+- "Hey"
+- "欢迎探索"  
+- "创造数字体验，探索技术边界"
+
+---
+
+## 1. 安装依赖
+在终端执行：`npm install gsap`
+
+---
+
+## 2. 创建组件文件
+
+### `src/components/TextType.tsx`
+完整代码（基于 React Bits 官方源码）：
+
+```tsx
+'use client';
+import { useEffect, useRef, useState, createElement, useMemo, useCallback } from 'react';
+import { gsap } from 'gsap';
+import './TextType.css';
+
+const TextType = ({
+  text,
+  as: Component = 'div',
+  typingSpeed = 50,
+  initialDelay = 0,
+  pauseDuration = 2000,
+  deletingSpeed = 30,
+  loop = true,
+  className = '',
+  showCursor = true,
+  hideCursorWhileTyping = false,
+  cursorCharacter = '|',
+  cursorClassName = '',
+  cursorBlinkDuration = 0.5,
+  textColors = [],
+  variableSpeed,
+  onSentenceComplete,
+  startOnVisible = false,
+  reverseMode = false,
+  ...props
+}) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(!startOnVisible);
+  const cursorRef = useRef(null);
+  const containerRef = useRef(null);
+  const textArray = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
+
+  const getRandomSpeed = useCallback(() => {
+    if (!variableSpeed) return typingSpeed;
+    const { min, max } = variableSpeed;
+    return Math.random() * (max - min) + min;
+  }, [variableSpeed, typingSpeed]);
+
+  const getCurrentTextColor = () => {
+    if (textColors.length === 0) return 'inherit';
+    return textColors[currentTextIndex % textColors.length];
+  };
+
+  useEffect(() => {
+    if (!startOnVisible || !containerRef.current) return;
+    const observer = new IntersectionObserver(
+      entries => { entries.forEach(entry => { if (entry.isIntersecting) setIsVisible(true); }); },
+      { threshold: 0.1 }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [startOnVisible]);
+
+  useEffect(() => {
+    if (showCursor && cursorRef.current) {
+      gsap.set(cursorRef.current, { opacity: 1 });
+      gsap.to(cursorRef.current, {
+        opacity: 0, duration: cursorBlinkDuration, repeat: -1, yoyo: true, ease: 'power2.inOut'
+      });
+    }
+  }, [showCursor, cursorBlinkDuration]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+    let timeout;
+    const currentText = textArray[currentTextIndex];
+    const processedText = reverseMode ? currentText.split('').reverse().join('') : currentText;
+
+    const executeTypingAnimation = () => {
+      if (isDeleting) {
+        if (displayedText === '') {
+          setIsDeleting(false);
+          if (currentTextIndex === textArray.length - 1 && !loop) return;
+          if (onSentenceComplete) onSentenceComplete(textArray[currentTextIndex], currentTextIndex);
+          setCurrentTextIndex(prev => (prev + 1) % textArray.length);
+          setCurrentCharIndex(0);
+          timeout = setTimeout(() => {}, pauseDuration);
+        } else {
+          timeout = setTimeout(() => { setDisplayedText(prev => prev.slice(0, -1)); }, deletingSpeed);
+        }
+      } else {
+        if (currentCharIndex < processedText.length) {
+          timeout = setTimeout(
+            () => {
+              setDisplayedText(prev => prev + processedText[currentCharIndex]);
+              setCurrentCharIndex(prev => prev + 1);
+            },
+            variableSpeed ? getRandomSpeed() : typingSpeed
+          );
+        } else if (textArray.length >= 1) {
+          if (!loop && currentTextIndex === textArray.length - 1) return;
+          timeout = setTimeout(() => { setIsDeleting(true); }, pauseDuration);
+        }
+      }
+    };
+
+    if (currentCharIndex === 0 && !isDeleting && displayedText === '') {
+      timeout = setTimeout(executeTypingAnimation, initialDelay);
+    } else {
+      executeTypingAnimation();
+    }
+    return () => clearTimeout(timeout);
+  }, [currentCharIndex, displayedText, isDeleting, typingSpeed, deletingSpeed, pauseDuration, textArray, currentTextIndex, loop, initialDelay, isVisible, reverseMode, variableSpeed, onSentenceComplete]);
+
+  const shouldHideCursor = hideCursorWhileTyping && (currentCharIndex < textArray[currentTextIndex].length || isDeleting);
+
+  return createElement(
+    Component,
+    { ref: containerRef, className: `text-type ${className}`, ...props },
+    <span className="text-type__content" style={{ color: getCurrentTextColor() || 'inherit' }}>{displayedText}</span>,
+    showCursor && (
+      <span ref={cursorRef} className={`text-type__cursor ${cursorClassName} ${shouldHideCursor ? 'text-type__cursor--hidden' : ''}`}>
+        {cursorCharacter}
+      </span>
+    )
+  );
+};
+
+export default TextType;
+src/components/TextType.css
+css
+.text-type { display: inline-block; white-space: pre-wrap; }
+.text-type__cursor { margin-left: 0.25rem; display: inline-block; opacity: 1; }
+.text-type__cursor--hidden { display: none; }
+3. 在 Hero 区替换文本（核心配置）
+打开 Hero.tsx，将原有的 "Hey"、"欢迎探索"、"创造数字体验，探索技术边界" 三个静态文本替换为以下代码：
+
+tsx
+import TextType from '@/components/TextType';
+
+{/* 英文小字 - 仅打出一次，不显示光标 */}
+<TextType
+  text="Hey"
+  typingSpeed={75}
+  initialDelay={500}
+  showCursor={false}
+  loop={false}
+  className="text-sm font-medium text-white/70"
+/>
+
+{/* 主标题 - 仅打出一次，无光标 */}
+<TextType
+  text="欢迎探索"
+  typingSpeed={75}
+  initialDelay={1500}
+  showCursor={false}
+  loop={false}
+  className="text-5xl font-bold text-white md:text-6xl"
+/>
+
+{/* 副标题 - 三句话轮播，显示下划线光标 */}
+<TextType
+  text={["Hey", "欢迎探索", "创造数字体验，探索技术边界"]}
+  typingSpeed={75}
+  deletingSpeed={50}
+  pauseDuration={1500}
+  initialDelay={2500}
+  cursorBlinkDuration={0.5}
+  showCursor
+  cursorCharacter="_"
+  loop
+  className="text-lg text-white/50"
+/>
+参数说明（与截图面板一致）
+参数	设定值	作用
+typingSpeed	75	打字速度 75ms/字
+deletingSpeed	50	删除速度 50ms/字
+pauseDuration	1500	打完到开始删除的停顿
+cursorCharacter	"_"	下划线光标
+cursorBlinkDuration	0.5	光标闪烁周期 0.5s
+showCursor	true（仅副标题）	显示闪烁光标
+loop	true（仅副标题）	三句话循环播放
+4. 其余保持不变
+不要改动 ASCII 文字（ASCIIText）、Hyperspeed 背景、导航栏、MagneticButton、BorderBeam 等任何现有组件和动效。

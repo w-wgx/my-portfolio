@@ -1,0 +1,74 @@
+## ASCIIText 组件布局诊断报告
+### 1. 父容器结构
+完整嵌套层级：
+
+关键 CSS 类：
+
+层级 元素 CSS 类 / 样式 第1层 div fixed inset-0 z-0 第2层 section relative w-full h-screen overflow-hidden 第3层 div absolute inset-0 z-10 flex items-start justify-center pt-[25%] 第4层 div.ascii-text-container position: absolute; width: 100%; height: 100% (inline)
+
+### 2. 定位方式
+ASCIIText 父容器：
+
+ASCIIText 组件本身（ components/ui/ASCIIText.tsx:600-604 ）：
+
+问题发现：
+
+- 双重绝对定位 ：父容器已经是 absolute inset-0 ，ASCIIText 组件内部又设置了 position: absolute ，导致定位嵌套混乱
+- 无 top / left / transform 偏移属性
+### 3. 尺寸与间距
+ASCIIText 父容器：
+
+ASCIIText 组件：
+
+HeroBackground section：
+
+### 4. 布局上下文
+ASCIIText 处于 Flex 容器中：
+
+对齐方式：
+
+- 水平方向： justify-center → ASCII 文本在水平方向居中
+- 垂直方向： items-start + pt-[25%] → ASCII 文本在垂直方向从顶部开始，向下偏移 25%
+### 5. 与下方内容的关系
+层级结构：
+
+间距关系：
+
+- ASCIIText 在背景层（ fixed z-0 ），"欢迎探索" 在内容层（ main z-10 ）
+- 两者 分属不同容器 ，没有直接的 margin/gap 关系
+- Hero 组件的 pt-[300px] / pt-[400px] 是为了避开顶部的 ASCII 文本
+### 6. 意外干扰检查
+属性 是否存在 影响分析 transform ❌ 无 - opacity ❌ 无 - z-index ✅ z-10 ASCIIText 和内容层都用了 z-10 ，但背景层有 z-0 包裹，理论上内容层应该在上方 overflow: hidden ✅ section 可能导致问题 ：section 是 h-screen ，如果 ASCII 文本超出视口会被裁剪 mix-blend-mode ✅ difference 可能导致问题 ：在浅色主题下 mix-blend-mode: difference 可能显示异常
+
+潜在问题：
+
+1. mix-blend-mode: difference （ ASCIIText.tsx:145 ）：在浅色主题下，白色背景与浅色文本混合可能导致对比度问题
+2. h-screen + overflow-hidden ：当页面滚动时，背景层不会跟随滚动，可能导致视觉断层
+3. 双重绝对定位 ：ASCIIText 组件内部的 position: absolute 与父容器的 absolute inset-0 重叠，可能导致尺寸计算异常
+4. z-10 冲突 ：ASCIIText 和主内容区都使用了 z-10 ，虽然背景层有 z-0 包裹，但在某些情况下可能出现层级混乱
+### 7. 修复建议
+问题1：双重绝对定位
+
+问题2：浅色主题下 mix-blend-mode 显示异常
+
+```
+/* ASCIIText.tsx 中的 style 标签 */
+.ascii-text-container pre {
+  /* 根据主题动态调整混合模式 */
+  mix-blend-mode: difference; /* 深色主题
+  适用 */
+  /* 浅色主题可能需要改为 normal 或其他模式 
+  */
+}
+```
+问题3：背景层不跟随滚动
+
+```
+// HeroBackground.tsx
+<section className="relative w-full 
+h-screen overflow-hidden">
+// 改为 min-h-screen 或移除 
+overflow-hidden
+<section className="relative w-full 
+min-h-screen">
+```

@@ -10,7 +10,6 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -20,17 +19,19 @@ type NavItem = {
 };
 
 const NAV_ITEMS: readonly NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/projects" },
-  { label: "About", href: "/about" },
+  { label: "首页", href: "/" },
+  { label: "项目", href: "/projects" },
+  { label: "关于", href: "/about" },
 ];
 
 function useIsMounted(): boolean {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  return mounted;
 }
 
 function NavThemeToggle(): ReactNode {
@@ -77,31 +78,39 @@ function NavThemeToggle(): ReactNode {
     });
   };
 
+  // 服务端渲染时只渲染空按钮，避免 Dark Reader 扩展导致的 Hydration Mismatch
+  if (!mounted) {
+    return (
+      <button
+        type="button"
+        onClick={toggleTheme}
+        aria-label="切换主题"
+        className="focus-ring relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-background ring-1 ring-foreground/8 transition-colors"
+      >
+        <span aria-hidden="true" className="relative h-4 w-4" />
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
       onClick={toggleTheme}
-      aria-label={
-        mounted
-          ? isDark
-            ? "Switch to light theme"
-            : "Switch to dark theme"
-          : "Toggle theme"
-      }
-      aria-pressed={mounted ? isDark : undefined}
+      aria-label={isDark ? "切换到浅色主题" : "切换到深色主题"}
+      aria-pressed={isDark}
       className="focus-ring relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-background ring-1 ring-foreground/8 transition-colors"
     >
       <span aria-hidden="true" className="relative h-4 w-4">
         <Sun
           className={`absolute inset-0 h-4 w-4 text-foreground transition-all duration-300 ${
-            mounted && isDark
+            isDark
               ? "rotate-0 scale-100 opacity-100"
               : "-rotate-90 scale-0 opacity-0"
           }`}
         />
         <Moon
           className={`absolute inset-0 h-4 w-4 text-foreground transition-all duration-300 ${
-            mounted && !isDark
+            !isDark
               ? "rotate-0 scale-100 opacity-100"
               : "rotate-90 scale-0 opacity-0"
           }`}
