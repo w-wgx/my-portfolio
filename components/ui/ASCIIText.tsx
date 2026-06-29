@@ -320,12 +320,7 @@ class CanvAscii {
   }
 
   async init() {
-    try {
-      await document.fonts.load('600 200px "IBM Plex Mono"');
-      await document.fonts.load('500 12px "IBM Plex Mono"');
-    } catch (e) {
-      // Font loading failed, continue with fallback
-    }
+    // 使用已加载的 IBM Plex Mono 字体（通过 Next.js font optimization）
     await document.fonts.ready;
 
     this.setMesh();

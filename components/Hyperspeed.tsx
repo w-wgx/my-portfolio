@@ -399,7 +399,8 @@ const Hyperspeed = forwardRef<unknown, HyperspeedProps>(({ effectOptions = DEFAU
           fogNear: { value: fog.near },
           fogFar: { value: fog.far }
         };
-        this.clock = new THREE.Clock();
+        this.clock = new THREE.Timer();
+        this.clock.connect(window);
         this.assets = {};
         this.disposed = false;
 
@@ -543,7 +544,7 @@ const Hyperspeed = forwardRef<unknown, HyperspeedProps>(({ effectOptions = DEFAU
         this.speedUp += lerp(this.speedUp, this.speedUpTarget, lerpPercentage, 0.00001);
         this.timeOffset += this.speedUp * delta;
 
-        let time = this.clock.elapsedTime + this.timeOffset;
+        let time = this.clock.getElapsed() + this.timeOffset;
 
         this.rightCarLights.update(time);
         this.leftCarLights.update(time);
@@ -581,6 +582,11 @@ const Hyperspeed = forwardRef<unknown, HyperspeedProps>(({ effectOptions = DEFAU
 
       dispose() {
         this.disposed = true;
+
+        if (this.clock) {
+          this.clock.disconnect();
+          this.clock.dispose();
+        }
 
         if (this.scene) {
           this.scene.traverse(object => {

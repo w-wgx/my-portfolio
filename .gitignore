@@ -26,6 +26,10 @@
 *.pdf
 *.png
 *.jpg
+# 允许 public 目录中的图片文件
+!public/*.png
+!public/*.jpg
+!public/*.webp
 MDMDMD.MD
 介绍.txt
 
